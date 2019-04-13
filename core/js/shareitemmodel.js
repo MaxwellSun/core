@@ -73,8 +73,8 @@
 	 * @property {string} description
 	 * @property {number[]} shareType
 	 * @property {number[]} incompatiblePermissions
-	 * @property {OC.Share.Types.ShareAttribute[]} incompatibleAttributes
 	 * @property {number[]} requiredPermissions
+	 * @property {OC.Share.Types.ShareAttribute[]} incompatibleAttributes
 	 */
 
 	/**
@@ -945,20 +945,24 @@
 		 *
 		 * @param scope
 		 * @param key
-		 * @returns string|null
+		 * @returns {OC.Share.Types.RegisteredShareAttribute}
 		 */
-		getRegisteredShareAttributeLabel: function(scope, key) {
+		getRegisteredShareAttribute: function(scope, key) {
 			for(var i in this._registeredAttributes) {
 				if (this._registeredAttributes[i].scope === scope
 					&& this._registeredAttributes[i].key === key) {
-					return this._registeredAttributes[i].label;
+					return this._registeredAttributes[i];
 				}
 			}
 			return null;
 		},
 
 		/**
-		 * Apps can register default share attributes
+		 * Apps can register default share attributes. The applications
+		 * registering share attributes are required to follow the rules:
+		 *   attribute enabled -> functionality is added (e.g. can download)
+		 *   attribute disabled -> functionality is restricted
+		 *   incompatible attribute -> functionality is ignored
 		 *
 		 * @param {OC.Share.Types.RegisteredShareAttribute} $shareAttribute
 		 */
